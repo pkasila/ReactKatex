@@ -1,5 +1,6 @@
 {
   "name": "@pkasila/react-katex",
+  "private": false,
   "version": "0.0.0-development",
   "description": "ReactKatex is a React component which allows to render LaTeX formulas and in plain text using KaTeX",
   "main": "./lib/src/index.js",
