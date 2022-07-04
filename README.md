@@ -48,7 +48,7 @@ Just follow KaTeX's options [here](https://katex.org/docs/options.html). All (or
 
 [build-img]:https://github.com/pkasila/ReactKatex/actions/workflows/release.yml/badge.svg
 [build-url]:https://github.com/pkasila/ReactKatex/actions/workflows/release.yml
-[downloads-img]:https://img.shields.io/npm/dt/typescript-npm-package-template
+[downloads-img]:https://img.shields.io/npm/dt/@pkasila/react-katex
 [downloads-url]:https://www.npmtrends.com/@pkasila/react-katex
 [npm-img]:https://img.shields.io/npm/v/@pkasila/react-katex
 [npm-url]:https://www.npmjs.com/package/@pkasila/react-katex
