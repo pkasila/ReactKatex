@@ -17,6 +17,7 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     colorIsTextColor: false,
     strict: 'warn',
     trust: false,
+    enforceOutput: false,
   };
 
   static propTypes = {
@@ -38,6 +39,7 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     ]),
     trust: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     output: PropTypes.oneOf(['html', 'mathml', 'htmlAndMathml']),
+    enforceOutput: PropTypes.bool,
   };
 
   constructor(props: ReactKatexProps) {
@@ -48,7 +50,11 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     const { children, ...rest } = this.props;
 
     // Check MathML support
-    if (rest.output !== 'html' && !utils.hasMathMLSupport()) {
+    if (
+      !rest.enforceOutput &&
+      rest.output !== 'html' &&
+      !utils.hasMathMLSupport()
+    ) {
       // Drop to HTML-only
       rest.output = 'html';
     }

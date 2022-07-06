@@ -14,4 +14,5 @@ export default interface ReactKatexProps {
   trust?: boolean | ((ctx: any) => boolean);
   output?: 'html' | 'mathml' | 'htmlAndMathml';
   globalGroup?: boolean;
+  enforceOutput?: boolean;
 }
