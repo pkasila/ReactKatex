@@ -16,6 +16,14 @@
 npm install @pkasila/react-katex
 ```
 
+### KaTeX stylesheets
+
+**Remember** to include KaTeX's stylesheets:
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/katex@0.16.0/dist/katex.min.css">
+```
+
 ## Usage
 
 ```tsx
@@ -40,11 +48,34 @@ function DifferentModes() {
 }
 ```
 
+### ReactKatex's MathML fallback mechanism
+
+> While Safari and Firefox support MathML, Chrome will support MathML Core by default
+> only in **mid-September 2022** with version 106, more details on the
+> [Chrome Platform Status](https://chromestatus.com/feature/5240822173794304).
+> Right now MathML core is available in Chrome with a flag
+> [chrome://flags/#enable-experimental-web-platform-features](chrome://flags/#enable-experimental-web-platform-features)
+
+By default, ReactKatex uses `mathml` output. It's done that way because browsers supporting
+MathML usually provide better accessibility features for it. So, when using just `mathml` output,
+it won't mix with HTML and shouldn't cause any accessibility issues.
+
+Still, some browsers don't support MathML at the moment. For these browsers, ReactKatex implements
+a fallback mechanism: if the browser doesn't support MathML, then ReactKatex will automatically switch
+to `html` output when passing options to KaTeX.
+
+You can disable this behavior by passing the `enforceOutput` option set to `true`.
+
 ## API
 
 ### ReactKatex
 
-Just follow KaTeX's options [here](https://katex.org/docs/options.html). All (or almost) are available.
+### KaTeX's options and format
+
+ReactKatex renders formulas inside `$` (inline-mode)  or `$$` (block-mode).
+
+ReactKatex's options (props) are basically KaTeX's options [here](https://katex.org/docs/options.html).
+All (or almost) are available.
 
 [build-img]:https://github.com/pkasila/ReactKatex/actions/workflows/release.yml/badge.svg
 [build-url]:https://github.com/pkasila/ReactKatex/actions/workflows/release.yml
