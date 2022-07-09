@@ -63,7 +63,7 @@ const latexify = (string: string, options: ReactKatexProps) => {
   const processResult = (resultToProcess: midResult[]) => {
     return resultToProcess.map(r => {
       if (r.type === 'text') {
-        return r.string;
+        return r.string.replace('\n\n', '<br />');
       }
       return (
         <span
