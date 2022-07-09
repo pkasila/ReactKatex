@@ -18,6 +18,7 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     strict: 'warn',
     trust: false,
     enforceOutput: false,
+    breakLine: false,
   };
 
   static propTypes = {
@@ -40,6 +41,7 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     trust: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     output: PropTypes.oneOf(['html', 'mathml', 'htmlAndMathml']),
     enforceOutput: PropTypes.bool,
+    breakLine: PropTypes.bool,
   };
 
   constructor(props: ReactKatexProps) {
