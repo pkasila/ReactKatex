@@ -15,4 +15,5 @@ export default interface ReactKatexProps {
   output?: 'html' | 'mathml' | 'htmlAndMathml';
   globalGroup?: boolean;
   enforceOutput?: boolean;
+  breakLine?: boolean;
 }

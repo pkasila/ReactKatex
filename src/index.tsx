@@ -5,9 +5,9 @@ import ReactKatexProps from './props';
 
 export default class ReactKatex extends React.Component<ReactKatexProps> {
   static defaultProps = {
-    children: '',
+    children: null,
     displayMode: false,
-    output: 'mathml',
+    output: 'htmlAndMathml',
     leqno: false,
     fleqn: false,
     throwOnError: true,
@@ -18,6 +18,7 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     strict: 'warn',
     trust: false,
     enforceOutput: false,
+    breakLine: false,
   };
 
   static propTypes = {
@@ -40,6 +41,7 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     trust: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     output: PropTypes.oneOf(['html', 'mathml', 'htmlAndMathml']),
     enforceOutput: PropTypes.bool,
+    breakLine: PropTypes.bool,
   };
 
   constructor(props: ReactKatexProps) {
@@ -52,11 +54,12 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     // Check MathML support
     if (
       !rest.enforceOutput &&
-      rest.output !== 'html' &&
+      rest.output === 'mathml' &&
       !utils.hasMathMLSupport()
     ) {
-      // Drop to HTML-only
-      rest.output = 'html';
+      // If there is no MathML support and output is set to MathML-only,
+      // then switch to HTML and MathML render
+      rest.output = 'htmlAndMathml';
     }
 
     if (children === null || children === undefined) {
