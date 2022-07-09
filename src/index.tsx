@@ -7,7 +7,7 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
   static defaultProps = {
     children: '',
     displayMode: false,
-    output: 'mathml',
+    output: 'htmlAndMathml',
     leqno: false,
     fleqn: false,
     throwOnError: true,
