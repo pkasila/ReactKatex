@@ -56,19 +56,43 @@ function DifferentModes() {
 > Right now MathML core is available in Chrome with a flag
 > [chrome://flags/#enable-experimental-web-platform-features](chrome://flags/#enable-experimental-web-platform-features)
 
-By default, ReactKatex uses `mathml` output. It's done that way because browsers supporting
-MathML usually provide better accessibility features for it. So, when using just `mathml` output,
-it won't mix with HTML and shouldn't cause any accessibility issues.
-
-Still, some browsers don't support MathML at the moment. For these browsers, ReactKatex implements
-a fallback mechanism: if the browser doesn't support MathML, then ReactKatex will automatically switch
-to `html` output when passing options to KaTeX.
+By default, ReactKatex uses `htmlAndMathml` output. It's done that way because still, some browsers don't
+support MathML at the moment. For these browsers, ReactKatex implements a fallback mechanism: if the browser
+doesn't support MathML but `output` is set to `mathml`, then ReactKatex will automatically switch to `html`
+output when passing options to KaTeX.
 
 You can disable this behavior by passing the `enforceOutput` option set to `true`.
 
 ## API
 
 ### ReactKatex
+
+#### custom `output` behavior
+
+By default, it's set to `htmlAndMathml`. If you choose `mathml` then ReactKatex will run checks to validate
+that the client's browser supports MathML. If not, then it will switch to default `htmlAndMathml` renderer.
+
+When using SSR, ReactKatex will consider that MathML is supported, so what you pass into `output` will stay
+as it is. But on the client-side while rendering the second time it **may** run check and switch from `mathml`
+to `htmlAndMathml`.
+
+If you use Remix.JS and ReactKatex has `mathml` output and have user without MathML support, then it will behave
+like that:
+
+1. Server will render MathML
+2. Client will display MathML
+3. User interacts with the app (switches pages, or somehow causes component to rerender)
+4. Client rerenders ReactKatex with `htmlAndMathml` output
+
+#### `enforceOutput`
+
+`enforceOutput` option disables ReactKatex's MathML check. So, if you pass this property, then it won't switch
+to `htmlAndMathml` if you specified output as `mathml` in any possible case.
+
+#### `breakLine`
+
+By default, `breakLine` is set to `false`. But if you set it to `true`, then it will replace `\n\n` in your string
+with `<br />` HTML tag. It may be useful in some cases.
 
 ### KaTeX's options and format
 
