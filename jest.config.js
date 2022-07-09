@@ -7,7 +7,9 @@ module.exports = {
   ],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
+    '<rootDir>/src/**/*.tsx',
     '!<rootDir>/src/types/**/*.ts',
+    '!<rootDir>/src/types/**/*.tsx',
   ],
   globals: {
     'ts-jest': {

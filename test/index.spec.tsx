@@ -58,7 +58,11 @@ $\${\\frac{m_{1}v^{2}}{2}}+{\\frac{m_{2}v^{2}}{2}}+k{\\frac{q^{2}}{r_0}}={\\frac
 $$r=\\left(\\frac{1}{r_{o}}+\\frac{m_{1}m_{2}}{m_{1}+m_{2}}\\frac{2v^{2}}{k q^{2}}\\right)^{-1}=10\\ м.$$
       `;
       const component = renderer.create(
-        <ReactKatex breakLine={true} output={'htmlAndMathml'} children={latex}></ReactKatex>
+        <ReactKatex
+          breakLine={true}
+          output={'htmlAndMathml'}
+          children={latex}
+        ></ReactKatex>
       );
       const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
