@@ -64,7 +64,13 @@ const latexify = (string: string, options: ReactKatexProps) => {
     return resultToProcess.map(r => {
       if (r.type === 'text') {
         if (options.breakLine) {
-          return r.string.replace('\n\n', '<br />');
+          const arr = r.string.split('\n\n');
+          return arr.map((s, idx) => (
+            <>
+              {s}
+              {idx !== arr.length - 1 ? <br /> : null}
+            </>
+          ));
         } else {
           return r.string;
         }

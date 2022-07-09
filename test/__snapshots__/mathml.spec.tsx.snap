@@ -19,7 +19,8 @@ exports[`mathml ReactKatex (MathML) Test on a physics problem solution with brea
       }
     }
   />
-   и одинаковое направление (относительная скорость равна нулю). Это состояние системы связано с начальным законами сохранения импульса и энергии:&lt;br /&gt;
+   и одинаковое направление (относительная скорость равна нулю). Это состояние системы связано с начальным законами сохранения импульса и энергии:
+  <br />
   <span
     dangerouslySetInnerHTML={
       Object {
@@ -27,7 +28,7 @@ exports[`mathml ReactKatex (MathML) Test on a physics problem solution with brea
       }
     }
   />
-  &lt;br /&gt;
+  <br />
   <span
     dangerouslySetInnerHTML={
       Object {
@@ -35,9 +36,9 @@ exports[`mathml ReactKatex (MathML) Test on a physics problem solution with brea
       }
     }
   />
-  &lt;br /&gt;Отсюда получаем:
-
-
+  <br />
+  Отсюда получаем:
+  <br />
   <span
     dangerouslySetInnerHTML={
       Object {
