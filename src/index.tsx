@@ -54,11 +54,12 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     // Check MathML support
     if (
       !rest.enforceOutput &&
-      rest.output !== 'html' &&
+      rest.output === 'mathml' &&
       !utils.hasMathMLSupport()
     ) {
-      // Drop to HTML-only
-      rest.output = 'html';
+      // If there is no MathML support and output is set to MathML-only,
+      // then switch to HTML and MathML render
+      rest.output = 'htmlAndMathml';
     }
 
     if (children === null || children === undefined) {
