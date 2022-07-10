@@ -7,7 +7,7 @@ interface midResult {
   type: string;
 }
 
-const latexify = (string: string, options: ReactKatexProps) => {
+const latexify = (string: string, options: ReactKatexProps): JSX.Element[] => {
   const regularExpression =
     /\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\]|\\\([\s\S]+?\\\)|\$[^$\\]*(?:\\.[^$\\]*)*\$/g;
   const blockRegularExpression = /\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\]/g;
