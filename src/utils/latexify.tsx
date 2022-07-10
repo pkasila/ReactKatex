@@ -66,10 +66,10 @@ const latexify = (string: string, options: ReactKatexProps) => {
         if (options.breakLine) {
           const arr = r.string.split('\n\n');
           return arr.map((s, idx) => (
-            <>
+            <React.Fragment key={idx}>
               {s}
               {idx !== arr.length - 1 ? <br /> : null}
-            </>
+            </React.Fragment>
           ));
         } else {
           return r.string;
