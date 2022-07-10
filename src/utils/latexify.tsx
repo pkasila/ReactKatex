@@ -1,5 +1,5 @@
 import katex from 'katex';
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactKatexProps from '../props';
 
 interface midResult {
@@ -7,7 +7,7 @@ interface midResult {
   type: string;
 }
 
-const latexify = (string: string, options: ReactKatexProps) => {
+const latexify = (string: string, options: ReactKatexProps): JSX.Element[] => {
   const regularExpression =
     /\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\]|\\\([\s\S]+?\\\)|\$[^$\\]*(?:\\.[^$\\]*)*\$/g;
   const blockRegularExpression = /\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\]/g;
@@ -61,22 +61,27 @@ const latexify = (string: string, options: ReactKatexProps) => {
   }
 
   const processResult = (resultToProcess: midResult[]) => {
-    return resultToProcess.map(r => {
+    return resultToProcess.map((r, rootIdx) => {
       if (r.type === 'text') {
         if (options.breakLine) {
           const arr = r.string.split('\n\n');
-          return arr.map((s, idx) => (
-            <>
-              {s}
-              {idx !== arr.length - 1 ? <br /> : null}
-            </>
-          ));
+          return (
+            <Fragment key={`breakLine-${rootIdx}`}>
+              {arr.map((s, idx) => (
+                <Fragment key={`breakLine-${rootIdx}-${idx}`}>
+                  {s}
+                  {idx !== arr.length - 1 ? <br /> : null}
+                </Fragment>
+              ))}
+            </Fragment>
+          );
         } else {
-          return r.string;
+          return <Fragment key={`noBreakLine-${rootIdx}`}>{r.string}</Fragment>;
         }
       }
       return (
         <span
+          key={`formula-${rootIdx}`}
           dangerouslySetInnerHTML={{
             __html: renderLatexString(r.string, r.type),
           }}
