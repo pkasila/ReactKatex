@@ -67,9 +67,6 @@ export default class ReactKatex extends React.Component<ReactKatexProps> {
     }
 
     const renderUs = utils.latexify(children, rest as ReactKatexProps);
-    renderUs.unshift('');
-    renderUs.unshift('span');
-    // @ts-ignore
-    return React.createElement.apply(null, renderUs);
+    return <span>{renderUs}</span>;
   }
 }
