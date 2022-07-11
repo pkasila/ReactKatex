@@ -1,107 +1,11 @@
-import katex from 'katex';
 import React, { ReactNode } from 'react';
-import PropTypes, { InferProps } from 'prop-types';
+import PropTypes from 'prop-types';
+import utils from './utils';
+import ReactKatexProps from './props';
 
-interface midResult {
-  string: string;
-  type: string;
-}
-
-export interface ReactKatexOptions {
-  children: ReactNode;
-  displayMode: boolean;
-  leqno: boolean;
-  fleqn: boolean;
-  throwOnError: boolean;
-  errorColor: string;
-  minRuleThickness: number;
-  colorIsTextColor: boolean;
-  macros: any;
-  maxSize: number;
-  maxExpand: number;
-  strict: boolean | string;
-  trust: boolean | ((ctx: any) => boolean);
-  output: 'html' | 'mathml' | 'htmlAndMathml';
-  globalGroup: boolean;
-}
-
-const latexify = (string: string, options: ReactKatexOptions) => {
-  const regularExpression =
-    /\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\]|\\\([\s\S]+?\\\)|\$[^$\\]*(?:\\.[^$\\]*)*\$/g;
-  const blockRegularExpression = /\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\]/g;
-
-  const stripDollars = (stringToStrip: string) =>
-    stringToStrip[0] === '$' && stringToStrip[1] !== '$'
-      ? stringToStrip.slice(1, -1)
-      : stringToStrip.slice(2, -2);
-
-  const getDisplay = (stringToDisplay: string) =>
-    stringToDisplay.match(blockRegularExpression) ? 'block' : 'inline';
-
-  const renderLatexString = (s: string, t: string) => {
-    let renderedString;
-    try {
-      const opts: ReactKatexOptions = Object.create(options);
-      if (t === 'block') {
-        opts.displayMode = true;
-      }
-      renderedString = katex.renderToString(s, opts);
-    } catch (err) {
-      console.error('couldn`t convert string', s);
-      return s;
-    }
-    return renderedString;
-  };
-
-  const result: midResult[] = [];
-
-  const latexMatch = string.match(regularExpression);
-  const stringWithoutLatex = string.split(regularExpression);
-
-  if (latexMatch) {
-    stringWithoutLatex.forEach((s, index) => {
-      result.push({
-        string: s,
-        type: 'text',
-      });
-      if (latexMatch[index]) {
-        result.push({
-          string: stripDollars(latexMatch[index]),
-          type: getDisplay(latexMatch[index]),
-        });
-      }
-    });
-  } else {
-    result.push({
-      string,
-      type: 'text',
-    });
-  }
-
-  const processResult = (resultToProcess: midResult[]) => {
-    return resultToProcess.map(r => {
-      if (r.type === 'text') {
-        return r.string;
-      }
-      return (
-        <span
-          dangerouslySetInnerHTML={{
-            __html: renderLatexString(r.string, r.type),
-          }}
-        />
-      );
-    });
-  };
-
-  // Returns list of spans with latex and non-latex strings.
-  return processResult(result);
-};
-
-export default class ReactKatex extends React.Component<
-  InferProps<typeof ReactKatex.propTypes>
-> {
+export default class ReactKatex extends React.Component<ReactKatexProps> {
   static defaultProps = {
-    children: '',
+    children: null,
     displayMode: false,
     output: 'htmlAndMathml',
     leqno: false,
@@ -113,6 +17,8 @@ export default class ReactKatex extends React.Component<
     colorIsTextColor: false,
     strict: 'warn',
     trust: false,
+    enforceOutput: false,
+    breakLine: false,
   };
 
   static propTypes = {
@@ -134,22 +40,33 @@ export default class ReactKatex extends React.Component<
     ]),
     trust: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     output: PropTypes.oneOf(['html', 'mathml', 'htmlAndMathml']),
+    enforceOutput: PropTypes.bool,
+    breakLine: PropTypes.bool,
   };
+
+  constructor(props: ReactKatexProps) {
+    super(props);
+  }
 
   render(): ReactNode {
     const { children, ...rest } = this.props;
+
+    // Check MathML support
+    if (
+      !rest.enforceOutput &&
+      rest.output === 'mathml' &&
+      !utils.hasMathMLSupport()
+    ) {
+      // If there is no MathML support and output is set to MathML-only,
+      // then switch to HTML and MathML render
+      rest.output = 'htmlAndMathml';
+    }
 
     if (children === null || children === undefined) {
       return <span></span>;
     }
 
-    const renderUs = latexify(
-      children,
-      Object.assign(Object.create(ReactKatex.defaultProps), rest)
-    );
-    renderUs.unshift('');
-    renderUs.unshift('span');
-    // @ts-ignore
-    return React.createElement.apply(null, renderUs);
+    const renderUs = utils.latexify(children, rest as ReactKatexProps);
+    return <span>{renderUs}</span>;
   }
 }
